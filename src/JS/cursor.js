@@ -2,13 +2,12 @@ class Cursor {
     /**@abstract Class constructor, just declare 
      * some atributes
      * 
-     * @cursor_pos Hold the document element that is father
-     * of the cursor element
+     * @cursor_element Hold the cursor document element
      * 
      * @cursor_exist True if a cursor exists and false if not
      */
     constructor() {
-        this.cursor_pos = null;
+        this.cursor_element = null;
         this.cursor_exist = false;
     }
 
@@ -25,8 +24,9 @@ class Cursor {
             cursor_element.classList.add("cursor");
             cursor_element.setAttribute("id", "cursor");
 
-            this.cursor_pos = document.getElementById(father_element_id);
-            this.cursor_pos.appendChild(cursor_element);
+            document.getElementById(father_element_id).appendChild(cursor_element);
+
+            this.cursor_element = cursor_element;
             this.cursor_exist = true;
         }
     }
