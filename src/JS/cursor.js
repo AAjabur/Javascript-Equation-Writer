@@ -20,14 +20,12 @@ class Cursor {
      * is passed as parameter from the addEventListener function.
      */
     update_cursor(mouse) {
-        let mouse_x = mouse.pageX;
-        let mouse_y = mouse.pageY;
 
-        if (this.#mouse_in_element(mouse_x, mouse_y, document.getElementById("init_equation_input"))) {
+        if (this.#mouse_in_element(mouse, document.getElementById("init_equation_input"))) {
             this.create_cursor(document.getElementById("init_equation_input"));
         }
 
-        if (!this.#mouse_in_element(mouse_x, mouse_y, document.getElementById("init_equation_input"))) {
+        if (!this.#mouse_in_element(mouse, document.getElementById("init_equation_input"))) {
             this.destroy_cursor(mouse)
         }
 
@@ -67,7 +65,7 @@ class Cursor {
             let mouse_x = mouse.pageX;
             let mouse_y = mouse.pageY;
 
-            if (!this.#mouse_in_element(mouse_x, mouse_y, document.getElementById("init_equation_input"))) {
+            if (!this.#mouse_in_element(mouse, document.getElementById("init_equation_input"))) {
                 document.getElementById("cursor").remove();
                 this.cursor_exist = false;
             }
@@ -77,14 +75,18 @@ class Cursor {
     /**
      * @abstract Check if the mouse cursor is inside some html element
      * 
-     * @param mouse_x mouse cursor x coordinate
-     * @param mouse_y mouse cursor y coordinate
+     * @param mouse  An mouse object to retrieve it's x and y coordinates. The mouse object
+     * is passed as parameter from the addEventListener function.
+     * 
      * @param element element to check if mouse is inside
      * 
      * @return true if mouse is inside element or false if not
      */
 
-    #mouse_in_element(mouse_x, mouse_y, element) {
+    #mouse_in_element(mouse, element) {
+        let mouse_x = mouse.pageX;
+        let mouse_y = mouse.pageY;
+
         let e_rec = element.getBoundingClientRect();
         if (mouse_x < e_rec.right && mouse_x > e_rec.left &&
             mouse_y > e_rec.top && mouse_y < e_rec.bottom) {
