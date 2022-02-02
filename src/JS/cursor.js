@@ -42,7 +42,7 @@ class Cursor {
             let mouse_x = mouse.pageX;
             let mouse_y = mouse.pageY;
 
-            if (!this.#mouse_in_element(mouse_x, mouse_y, "init_equation_input")) {
+            if (!this.#mouse_in_element(mouse_x, mouse_y, document.getElementById("init_equation_input"))) {
                 document.getElementById("cursor").remove();
                 this.cursor_exist = false;
             }
@@ -53,13 +53,13 @@ class Cursor {
      * 
      * @param mouse_x mouse cursor x coordinate
      * @param mouse_y mouse cursor y coordinate
-     * @param element_id element id to check if mouse is inside
+     * @param element element to check if mouse is inside
      * 
      * @return true if mouse is inside element or false if not
      */
 
-    #mouse_in_element(mouse_x, mouse_y, element_id) {
-        let e_rec = document.getElementById(element_id).getBoundingClientRect();
+    #mouse_in_element(mouse_x, mouse_y, element) {
+        let e_rec = element.getBoundingClientRect();
         if (mouse_x < e_rec.right && mouse_x > e_rec.left &&
             mouse_y > e_rec.top && mouse_y < e_rec.bottom) {
             return true
