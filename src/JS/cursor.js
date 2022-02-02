@@ -43,14 +43,8 @@ class Cursor {
             cursor_element.classList.add("cursor");
             cursor_element.setAttribute("id", "cursor");
 
-<<<<<<< HEAD
-            document.getElementById(father_element_id).appendChild(cursor_element);
-
-            this.cursor_element = cursor_element;
-=======
             this.cursor_pos = element;
             this.cursor_pos.appendChild(cursor_element);
->>>>>>> develop
             this.cursor_exist = true;
         }
     }
