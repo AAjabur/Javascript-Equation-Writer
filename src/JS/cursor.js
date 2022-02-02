@@ -42,9 +42,9 @@ class Cursor {
             let cursor_element = document.createElement("span");
             cursor_element.classList.add("cursor");
             cursor_element.setAttribute("id", "cursor");
+            this.cursor_element = cursor_element;
 
-            this.cursor_pos = element;
-            this.cursor_pos.appendChild(cursor_element);
+            element.appendChild(cursor_element);
             this.cursor_exist = true;
         }
     }
