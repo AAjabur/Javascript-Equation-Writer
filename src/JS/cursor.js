@@ -28,9 +28,6 @@ class Cursor {
         if (!this.#mouse_in_element(mouse, document.getElementById("init_equation_input"))) {
             this.destroy_cursor(mouse)
         }
-
-        
-
     }
 
     /**
