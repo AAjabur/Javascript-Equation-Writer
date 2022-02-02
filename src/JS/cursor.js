@@ -1,5 +1,6 @@
 class Cursor {
-    /**@abstract Class constructor, just declare 
+    /**
+     * @abstract Class constructor, just declare 
      * some atributes
      * 
      * @cursor_pos Hold the document element that is father
@@ -12,26 +13,50 @@ class Cursor {
         this.cursor_exist = false;
     }
 
-    /**@abstract Create a blinking cursor as child of a father document element, just
+    /**
+     * @abstract Do all changes to the cursor when user click somewhere
+     * 
+     * @param mouse An mouse object to retrieve it's x and y coordinates. The mouse object
+     * is passed as parameter from the addEventListener function.
+     */
+    update_cursor(mouse) {
+        let mouse_x = mouse.pageX;
+        let mouse_y = mouse.pageY;
+
+        if (this.#mouse_in_element(mouse_x, mouse_y, document.getElementById("init_equation_input"))) {
+            this.create_cursor(document.getElementById("init_equation_input"));
+        }
+
+        if (!this.#mouse_in_element(mouse_x, mouse_y, document.getElementById("init_equation_input"))) {
+            this.destroy_cursor(mouse)
+        }
+
+        
+
+    }
+
+    /**
+     * @abstract Create a blinking cursor as child of a father document element, just
      * if a cursor does't already exist.
      * The cursor is made of a empty span tag and CSS animation
      * 
-     * @param father_element_id The id of the father element, a blinking cursor
+     * @param element The element of the father element, a blinking cursor
      * will be added as it son
      */
-    create_cursor(father_element_id) {
+    create_cursor(element) {
         if (!this.cursor_exist) {
             let cursor_element = document.createElement("span");
             cursor_element.classList.add("cursor");
             cursor_element.setAttribute("id", "cursor");
 
-            this.cursor_pos = document.getElementById(father_element_id);
+            this.cursor_pos = element;
             this.cursor_pos.appendChild(cursor_element);
             this.cursor_exist = true;
         }
     }
 
-    /**@abstract Remove the blinking cursor element if the user click outside 
+    /**
+     * @abstract Remove the blinking cursor element if the user click outside 
      * the equation input element
      * 
      * @param mouse An mouse object to retrieve it's x and y coordinates. The mouse object
@@ -49,7 +74,8 @@ class Cursor {
         }
     }
 
-    /**@abstract Check if the mouse cursor is inside some html element
+    /**
+     * @abstract Check if the mouse cursor is inside some html element
      * 
      * @param mouse_x mouse cursor x coordinate
      * @param mouse_y mouse cursor y coordinate
@@ -71,10 +97,6 @@ class Cursor {
 
 var cursor = new Cursor();
 
-document.getElementById("init_equation_input").onclick = function() {
-    cursor.create_cursor("init_equation_input");
-};
-
 document.addEventListener("click", function(mouse) {
-    cursor.destroy_cursor(mouse)
+    cursor.update_cursor(mouse)
 });
