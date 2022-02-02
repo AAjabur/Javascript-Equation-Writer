@@ -21,8 +21,10 @@ class WriteEquation {
         if (this.cursor.cursor_exist){
             if(kb_event.code == "Backspace"){
                 let cursor_parent = this.cursor.cursor_element.parentElement;
-                let penult_pos = cursor_parent.childNodes.length - 2;
-                cursor_parent.childNodes[penult_pos].remove();
+                if (cursor_parent.childNodes.length > 1){
+                    let penult_pos = cursor_parent.childNodes.length - 2;
+                    cursor_parent.childNodes[penult_pos].remove();
+                }
             }
             if(this.writeble_codes.includes(kb_event.code)){
                 let new_char_element = document.createElement("var");
