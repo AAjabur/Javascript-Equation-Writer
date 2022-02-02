@@ -19,12 +19,12 @@ class Cursor {
      * is passed as parameter from the addEventListener function.
      */
     update_cursor(mouse) {
-
-        if (this.#mouse_in_element(mouse, document.getElementById("init_equation_input"))) {
-            this.create_cursor(document.getElementById("init_equation_input"));
+        let input_element = document.getElementById("init_equation_input");
+        if (this.#mouse_in_element(mouse, input_element)) {
+            this.create_cursor(input_element);
         }
 
-        if (!this.#mouse_in_element(mouse, document.getElementById("init_equation_input"))) {
+        if (!this.#mouse_in_element(mouse, input_element)) {
             this.destroy_cursor(mouse)
         }
     }
