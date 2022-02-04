@@ -98,20 +98,15 @@ class Cursor {
     move_cursor_to(element, pos = "before"){
         let element_parent =  element.parentElement;
         this.destroy_cursor();
+        this.create_cursor(element_parent);
 
-        let cursor_element = document.createElement("span");
-        cursor_element.classList.add("cursor");
-        cursor_element.setAttribute("id", "cursor");
-        this.cursor_element = cursor_element;
-
-        element_parent.appendChild(cursor_element);
-        this.cursor_exist = true;
-
-        if (pos = "before"){
+        if (pos == "before"){
             element_parent.insertBefore(cursor_element, element);
+            console.log("atrás");
         }
-        if (pos = "after"){
+        if (pos == "after"){
             element.after(cursor_element);
+            console.log("frente");
         }
     }
 
