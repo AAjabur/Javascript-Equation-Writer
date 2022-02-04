@@ -31,7 +31,15 @@ class Cursor {
 
                 for (const element of input_elements){
                     if (this.#mouse_in_element(mouse, element)){
-                        this.move_cursor_to(element, mouse);
+                        let mouse_x = mouse.pageX;
+                        let e_rec = element.getBoundingClientRect();
+
+                        if (mouse_x < (e_rec.right + e_rec.left)/2){
+                            this.move_cursor_to(element, "before");
+                        }
+                        else{
+                            this.move_cursor_to(element, "after");
+                        }
                         clicked_some_child = true;
                     }
                 }
@@ -81,12 +89,9 @@ class Cursor {
         }
     }
 
-    move_cursor_to(element, mouse){
+    move_cursor_to(element, pos = "before"){
         let element_parent =  element.parentElement;
         this.destroy_cursor();
-
-        let mouse_x = mouse.pageX;
-        let e_rec = element.getBoundingClientRect();
 
         let cursor_element = document.createElement("span");
         cursor_element.classList.add("cursor");
@@ -96,13 +101,12 @@ class Cursor {
         element_parent.appendChild(cursor_element);
         this.cursor_exist = true;
 
-        if (mouse_x < (e_rec.right + e_rec.left)/2){
+        if (pos = "before"){
             element_parent.insertBefore(cursor_element, element);
         }
-        else{
+        if (pos = "after"){
             element.after(cursor_element);
         }
-
     }
 
     /**
