@@ -55,23 +55,24 @@ class Cursor {
     }
 
     /**
-     * @abstract Create a blinking cursor as child of a father document element, just
-     * if a cursor does't already exist.
+     * @abstract Create a blinking cursor as child of a father document element, destroy
+     * any other already created cursor
      * The cursor is made of a empty span tag and CSS animation
      * 
      * @param element The element of the father element, a blinking cursor
      * will be added as it son
      */
     create_cursor(element) {
-        if (!this.cursor_exist) {
-            let cursor_element = document.createElement("span");
-            cursor_element.classList.add("cursor");
-            cursor_element.setAttribute("id", "cursor");
-            this.cursor_element = cursor_element;
+        this.destroy_cursor();
 
-            element.appendChild(cursor_element);
-            this.cursor_exist = true;
-        }
+        let cursor_element = document.createElement("span");
+        cursor_element.classList.add("cursor");
+        cursor_element.setAttribute("id", "cursor");
+        this.cursor_element = cursor_element;
+
+        element.appendChild(cursor_element);
+        this.cursor_exist = true;
+
     }
 
     /**
