@@ -20,12 +20,32 @@ class Cursor {
      */
     update_cursor(mouse) {
         let input_element = document.getElementById("init_equation_input");
+
         if (this.#mouse_in_element(mouse, input_element)) {
-            this.create_cursor(input_element);
+
+            let clicked_some_child = false;
+
+            if (this.cursor_exist){
+                let cursor_parent_e = this.cursor_element.parentElement;
+                const input_elements = cursor_parent_e.childNodes;
+
+                for (const element of input_elements){
+                    if (this.#mouse_in_element(mouse, element)){
+                        this.move_cursor_to(element, mouse);
+                        clicked_some_child = true;
+                    }
+                }
+            }
+
+            console.log(clicked_some_child);
+
+            if (!clicked_some_child){
+                this.create_cursor(input_element);
+            }
         }
 
         if (!this.#mouse_in_element(mouse, input_element)) {
-            this.destroy_cursor(mouse)
+            this.destroy_cursor();
         }
     }
 
@@ -53,19 +73,36 @@ class Cursor {
      * @abstract Remove the blinking cursor element if the user click outside 
      * the equation input element
      * 
-     * @param mouse An mouse object to retrieve it's x and y coordinates. The mouse object
-     * is passed as parameter from the addEventListener function.
      */
-    destroy_cursor(mouse) {
+    destroy_cursor() {
         if (this.cursor_exist) {
-            let mouse_x = mouse.pageX;
-            let mouse_y = mouse.pageY;
-
-            if (!this.#mouse_in_element(mouse, document.getElementById("init_equation_input"))) {
-                document.getElementById("cursor").remove();
-                this.cursor_exist = false;
-            }
+            document.getElementById("cursor").remove();
+            this.cursor_exist = false;
         }
+    }
+
+    move_cursor_to(element, mouse){
+        let element_parent =  element.parentElement;
+        this.destroy_cursor();
+
+        let mouse_x = mouse.pageX;
+        let e_rec = element.getBoundingClientRect();
+
+        let cursor_element = document.createElement("span");
+        cursor_element.classList.add("cursor");
+        cursor_element.setAttribute("id", "cursor");
+        this.cursor_element = cursor_element;
+
+        element_parent.appendChild(cursor_element);
+        this.cursor_exist = true;
+
+        if (mouse_x < (e_rec.right + e_rec.left)/2){
+            element_parent.insertBefore(cursor_element, element);
+        }
+        else{
+            element.after(cursor_element);
+        }
+
     }
 
     /**
