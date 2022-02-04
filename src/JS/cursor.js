@@ -24,10 +24,10 @@ class Cursor {
         if (this.#mouse_in_element(mouse, input_element)) {
 
             let clicked_some_child = false;
-            const input_elements = input_element.childNodes;
+            const input_child_elements = input_element.childNodes;
 
             // Check if mouse is in any children element of the main input node
-            for (const element of input_elements){
+            for (const element of input_child_elements){
                 if (this.#mouse_in_element(mouse, element)){
                     let mouse_x = mouse.pageX;
                     let e_rec = element.getBoundingClientRect();
@@ -74,7 +74,6 @@ class Cursor {
 
         element.appendChild(cursor_element);
         this.cursor_exist = true;
-
     }
 
     /**
@@ -92,6 +91,7 @@ class Cursor {
      * @abstract Move cursor to the position before or after some given element
      * 
      * @param element Element you want to move the cursor to
+     * 
      * @param pos Position relative to the element you want to create the cursor
      * "before" will create the cursor before the element and "after" will create after
      */
