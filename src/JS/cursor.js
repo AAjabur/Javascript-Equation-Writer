@@ -24,26 +24,23 @@ class Cursor {
         if (this.#mouse_in_element(mouse, input_element)) {
 
             let clicked_some_child = false;
+            const input_elements = input_element.childNodes;
 
-            if (this.cursor_exist){
-                let cursor_parent_e = this.cursor_element.parentElement;
-                const input_elements = cursor_parent_e.childNodes;
+            for (const element of input_elements){
+                if (this.#mouse_in_element(mouse, element)){
+                    let mouse_x = mouse.pageX;
+                    let e_rec = element.getBoundingClientRect();
 
-                for (const element of input_elements){
-                    if (this.#mouse_in_element(mouse, element)){
-                        let mouse_x = mouse.pageX;
-                        let e_rec = element.getBoundingClientRect();
-
-                        if (mouse_x < (e_rec.right + e_rec.left)/2){
-                            this.move_cursor_to(element, "before");
-                        }
-                        else{
-                            this.move_cursor_to(element, "after");
-                        }
-                        clicked_some_child = true;
+                    if (mouse_x < (e_rec.right + e_rec.left)/2){
+                        this.move_cursor_to(element, "before");
                     }
+                    else{
+                        this.move_cursor_to(element, "after");
+                    }
+                    clicked_some_child = true;
                 }
             }
+
 
             console.log(clicked_some_child);
 
