@@ -26,14 +26,17 @@ class Cursor {
             let clicked_some_child = false;
             const input_elements = input_element.childNodes;
 
+            // Check if mouse is in any children element of the main input node
             for (const element of input_elements){
                 if (this.#mouse_in_element(mouse, element)){
                     let mouse_x = mouse.pageX;
                     let e_rec = element.getBoundingClientRect();
 
+                    // Create cursor before if clicked before middle of element
                     if (mouse_x < (e_rec.right + e_rec.left)/2){
                         this.move_cursor_to(element, "before");
                     }
+                    // Create cursor after if clicked after middle of element
                     else{
                         this.move_cursor_to(element, "after");
                     }
@@ -41,14 +44,13 @@ class Cursor {
                 }
             }
 
-
-            console.log(clicked_some_child);
-
+            // If the click was inside main input but not inside any children element
             if (!clicked_some_child){
                 this.create_cursor(input_element);
             }
         }
 
+        // If clicked somewhere else destroy the cursor
         if (!this.#mouse_in_element(mouse, input_element)) {
             this.destroy_cursor();
         }
@@ -78,7 +80,6 @@ class Cursor {
     /**
      * @abstract Remove the blinking cursor element if the user click outside 
      * the equation input element
-     * 
      */
     destroy_cursor() {
         if (this.cursor_exist) {
@@ -87,6 +88,13 @@ class Cursor {
         }
     }
 
+    /**
+     * @abstract Move cursor to the position before or after some given element
+     * 
+     * @param element Element you want to move the cursor to
+     * @param pos Position relative to the element you want to create the cursor
+     * "before" will create the cursor before the element and "after" will create after
+     */
     move_cursor_to(element, pos = "before"){
         let element_parent =  element.parentElement;
         this.destroy_cursor();
