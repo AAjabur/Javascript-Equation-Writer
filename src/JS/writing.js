@@ -19,13 +19,15 @@ class WriteEquation {
     
     write_key(kb_event) {
         if (this.cursor.cursor_exist){
+
             if(kb_event.code == "Backspace"){
-                let cursor_parent = this.cursor.cursor_element.parentElement;
-                if (cursor_parent.childNodes.length > 1){
-                    let penult_pos = cursor_parent.childNodes.length - 2;
-                    cursor_parent.childNodes[penult_pos].remove();
+                let element_to_remove = this.cursor.cursor_element.previousSibling;
+
+                if(element_to_remove){
+                    element_to_remove.remove();
                 }
             }
+
             if(this.writeble_codes.includes(kb_event.code)){
                 let new_char_element = document.createElement("var");
                 new_char_element.innerText = kb_event.key;
