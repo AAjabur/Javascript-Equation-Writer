@@ -4,6 +4,8 @@
 class WriteEquation {
     constructor(cursor) {
         this.cursor = cursor;
+
+        // All the keycodes in this array can be written into the <span> input
         this.writeble_codes = ["Digit0", "Digit1", "Digit2", "Digit3",
     "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "KeyA",
      "KeyB", "KeyC", "KeyD", "KeyE", "KeyF", "KeyG", "KeyH", "KeyI",
@@ -16,8 +18,13 @@ class WriteEquation {
      "BrackerLeft", "Backslash", "BracketRight"];
     }
 
-    
-    write_key(kb_event) {
+    /**
+     * @abstract Defines all actions the keyboard inputs will make.
+     * 
+     * @param kb_event An keyboard object to retrieve it's pressed keys. The keyboard object
+     * is passed as parameter from the addEventListener function.
+     */
+    do_key_press(kb_event) {
         if (this.cursor.cursor_exist){
             if(kb_event.code == "Backspace"){
                 let cursor_parent = this.cursor.cursor_element.parentElement;
@@ -45,6 +52,6 @@ class WriteEquation {
 var write_equation = new WriteEquation(cursor);
 
 document.addEventListener("keydown", function(kb_event) {
-    write_equation.write_key(kb_event);
+    write_equation.do_key_press(kb_event);
     }
 );
