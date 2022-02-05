@@ -10,11 +10,22 @@
 
 .cursor {
     height: 20px;
-    width: 2px;
+    width: 0.5px;
+    display: inline-block;
     background: black;
     opacity: 0;
-    display: inline-block;
     animation: blink 0.6s steps(2, end) infinite alternate;
+}
+
+var {
+    height: 30px;
+    width: 10px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 8px;
+    position: relative;
+    bottom: 8px;
 }
 
 @keyframes blink {

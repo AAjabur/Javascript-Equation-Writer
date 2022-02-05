@@ -3,13 +3,12 @@ class Cursor {
      * @abstract Class constructor, just declare 
      * some atributes
      * 
-     * @cursor_pos Hold the document element that is father
-     * of the cursor element
+     * @cursor_element Hold the cursor document element
      * 
      * @cursor_exist True if a cursor exists and false if not
      */
     constructor() {
-        this.cursor_pos = null;
+        this.cursor_element = null;
         this.cursor_exist = false;
     }
 
@@ -20,52 +19,94 @@ class Cursor {
      * is passed as parameter from the addEventListener function.
      */
     update_cursor(mouse) {
+        let input_element = document.getElementById("init_equation_input");
 
-        if (this.#mouse_in_element(mouse, document.getElementById("init_equation_input"))) {
-            this.create_cursor(document.getElementById("init_equation_input"));
+        if (this.#mouse_in_element(mouse, input_element)) {
+
+            let clicked_some_child = false;
+            const input_child_elements = input_element.childNodes;
+
+            // Check if mouse is in any children element of the main input node
+            for (const element of input_child_elements){
+                if (this.#mouse_in_element(mouse, element)){
+                    let mouse_x = mouse.pageX;
+                    let e_rec = element.getBoundingClientRect();
+
+                    // Create cursor before if clicked before middle of element
+                    if (mouse_x < (e_rec.right + e_rec.left)/2){
+                        this.move_cursor_to(element, "before");
+                    }
+                    // Create cursor after if clicked after middle of element
+                    else{
+                        this.move_cursor_to(element, "after");
+                    }
+                    clicked_some_child = true;
+                }
+            }
+
+            // If the click was inside main input but not inside any children element
+            if (!clicked_some_child){
+                this.create_cursor(input_element);
+            }
         }
 
-        if (!this.#mouse_in_element(mouse, document.getElementById("init_equation_input"))) {
-            this.destroy_cursor(mouse)
+        // If clicked somewhere else destroy the cursor
+        if (!this.#mouse_in_element(mouse, input_element)) {
+            this.destroy_cursor();
         }
     }
 
     /**
-     * @abstract Create a blinking cursor as child of a father document element, just
-     * if a cursor does't already exist.
+     * @abstract Create a blinking cursor as child of a father document element, destroy
+     * any other already created cursor
      * The cursor is made of a empty span tag and CSS animation
      * 
      * @param element The element of the father element, a blinking cursor
      * will be added as it son
      */
     create_cursor(element) {
-        if (!this.cursor_exist) {
-            let cursor_element = document.createElement("span");
-            cursor_element.classList.add("cursor");
-            cursor_element.setAttribute("id", "cursor");
+        this.destroy_cursor();
 
-            this.cursor_pos = element;
-            this.cursor_pos.appendChild(cursor_element);
-            this.cursor_exist = true;
-        }
+        let cursor_element = document.createElement("span");
+        cursor_element.classList.add("cursor");
+        cursor_element.setAttribute("id", "cursor");
+        this.cursor_element = cursor_element;
+
+        element.appendChild(cursor_element);
+        this.cursor_exist = true;
     }
 
     /**
      * @abstract Remove the blinking cursor element if the user click outside 
      * the equation input element
-     * 
-     * @param mouse An mouse object to retrieve it's x and y coordinates. The mouse object
-     * is passed as parameter from the addEventListener function.
      */
-    destroy_cursor(mouse) {
+    destroy_cursor() {
         if (this.cursor_exist) {
-            let mouse_x = mouse.pageX;
-            let mouse_y = mouse.pageY;
+            document.getElementById("cursor").remove();
+            this.cursor_exist = false;
+        }
+    }
 
-            if (!this.#mouse_in_element(mouse, document.getElementById("init_equation_input"))) {
-                document.getElementById("cursor").remove();
-                this.cursor_exist = false;
-            }
+    /**
+     * @abstract Move cursor to the position before or after some given element
+     * 
+     * @param element Element you want to move the cursor to
+     * 
+     * @param pos Position relative to the element you want to create the cursor
+     * "before" will create the cursor before the element and "after" will create after
+     */
+    move_cursor_to(element, pos = "before"){
+        let element_parent =  element.parentElement;
+        this.destroy_cursor();
+        this.create_cursor(element_parent);
+
+        if (pos == "before"){
+            element_parent.insertBefore(cursor_element, element);
+            console.log("atrás");
+        }
+        if (pos == "after"){
+            element.after(cursor_element);
+            console.log("frente");
         }
     }
 
