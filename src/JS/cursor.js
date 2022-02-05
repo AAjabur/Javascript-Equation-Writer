@@ -101,12 +101,10 @@ class Cursor {
         this.create_cursor(element_parent);
 
         if (pos == "before"){
-            element_parent.insertBefore(cursor_element, element);
-            console.log("atrás");
+            element_parent.insertBefore(this.cursor_element, element);
         }
         if (pos == "after"){
-            element.after(cursor_element);
-            console.log("frente");
+            element.after(this.cursor_element);
         }
     }
 
