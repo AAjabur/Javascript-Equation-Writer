@@ -26,7 +26,7 @@ class WriteEquation {
         if (this.cursor.cursor_exist){
 
             if(kb_event.code == "Backspace"){
-                let element_to_remove = this.cursor.cursor_element.previousSibling;
+                let element_to_remove = this.cursor.cursor_order.get_element_before(this.cursor.cursor_element);
 
                 if(element_to_remove){
                     element_to_remove.remove();

@@ -10,6 +10,7 @@ class Cursor {
     constructor() {
         this.cursor_element = null;
         this.cursor_exist = false;
+        this.cursor_order = new CursorOrder();
     }
 
     /**
@@ -20,11 +21,13 @@ class Cursor {
      */
     update_cursor(mouse) {
         let input_element = document.getElementById("init_equation_input");
+        this.cursor_order.update_cursor_order();
+        console.log(this.cursor_order._cursor_order);
 
         if (this.#mouse_in_element(mouse, input_element)) {
 
             let clicked_some_child = false;
-            const input_child_elements = input_element.childNodes;
+            const input_child_elements = this.cursor_order._cursor_order;
 
             // Check if mouse is in any children element of the main input node
             for (const element of input_child_elements){
