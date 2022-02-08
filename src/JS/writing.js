@@ -1,9 +1,7 @@
-
-
-
 class WriteEquation {
     constructor(cursor) {
         this.cursor = cursor;
+        this.equation_handler = new EquationHandler(cursor);
 
         // All the keycodes in this array can be written into the <span> input
         this.writeble_codes = ["Digit0", "Digit1", "Digit2", "Digit3",
@@ -38,11 +36,15 @@ class WriteEquation {
             if(this.writeble_codes.includes(kb_event.code)){
                 let new_char_element = document.createElement("var");
                 new_char_element.innerText = kb_event.key;
-    
+
                 let cursor_parent = this.cursor.cursor_element.parentElement;
                 cursor_parent.appendChild(new_char_element);
-    
+
                 cursor_parent.insertBefore(new_char_element, this.cursor.cursor_element);
+            }
+
+            if(kb_event.code == "Quote" && kb_event.getModifierState("Shift")){
+                this.equation_handler.add_superscript(this.cursor.cursor_element);
             }
         }
         else{
